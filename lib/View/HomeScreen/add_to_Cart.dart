@@ -5,7 +5,7 @@ import '../../Services/Firebase_Service.dart'; // Đảm bảo bạn đã import
 class Cart extends ChangeNotifier {
   Map<FoodItem, int> items = {};
   final FirebaseService _firebaseService = FirebaseService();
-  List<String> _unavailableFoods = [];
+  final List<String> _unavailableFoods = [];
 
   List<String> get unavailableFoods => _unavailableFoods;
 
@@ -37,10 +37,7 @@ class Cart extends ChangeNotifier {
   void updateNoteForFood(FoodItem food, String newNote) {
     if (items.containsKey(food)) {
       var existingFoodItem = items.keys.firstWhere((item) => item.id == food.id);
-      if (existingFoodItem != null) {
-        // Cập nhật thuộc tính 'note' cho đối tượng 'FoodItem' trong giỏ hàng
-        existingFoodItem.note = newNote;
-      }
+      existingFoodItem.note = newNote;
     }
     saveCart(); // Lưu giỏ hàng sau khi cập nhật
     notifyListeners();
@@ -62,9 +59,6 @@ class Cart extends ChangeNotifier {
     print("loadCart is being called.");
     var result = await _firebaseService.loadCartFromFirestore();
     items = result;
-   // _unavailableFoods = result.second;
-   // print("$_unavailableFoods is being called.");
-// Bạn có thể sử dụng `unavailableFoods` ở đây để thông báo cho người dùng.
 
     notifyListeners(); // Thông báo khi hoàn tất việc tải giỏ hàng
   }
@@ -73,11 +67,4 @@ class Cart extends ChangeNotifier {
     items.clear();
     notifyListeners();
   }
-  /*Future<void> loadAddresses() async {
-    print("loadAddress is being called.");
-    items = (await _firebaseService.loadAddressesFromFirestore()) as Map<FoodItem, int>;
-    notifyListeners(); // Thông báo khi hoàn tất việc tải địa chỉ
-  }
-
-   */
 }

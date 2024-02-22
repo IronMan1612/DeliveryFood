@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../Data/banner_list_data.dart';
 
 class BannerWidget extends StatefulWidget {
+  const BannerWidget({super.key});
+
   @override
   _BannerWidgetState createState() => _BannerWidgetState();
 }
-
 class _BannerWidgetState extends State<BannerWidget> {
   final PageController _pageController = PageController();
   int currentPage = 0;
@@ -36,8 +36,8 @@ class _BannerWidgetState extends State<BannerWidget> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          height: 190,
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.2,
           width: double.infinity,
           child: PageView.builder(
             controller: _pageController,
@@ -56,7 +56,7 @@ class _BannerWidgetState extends State<BannerWidget> {
           ),
         ),
         Positioned(  // Sử dụng Positioned để xác định vị trí của DotsIndicator trong Stack
-          bottom: 30,  // Đặt ở dưới cùng của Stack và cách đáy 10px
+          bottom: 20,  // Đặt ở dưới cùng của Stack và cách đáy 10px
           left: 0,
           right: 0,
           child: Center(  // Sử dụng Center để căn giữa DotsIndicator theo chiều ngang

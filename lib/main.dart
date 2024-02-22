@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:lap9/View/Cart/address_screen.dart';
-import 'package:lap9/components/Navbar/Bottom_Navigation_Bar.dart';
+import 'package:DeliveryFood/View/Cart/address_screen.dart';
+import 'package:DeliveryFood/components/Navbar/Bottom_Navigation_Bar.dart';
 import 'package:provider/provider.dart';
 import 'Controller/Auth_model.dart';
 import 'Services/Firebase_Service.dart';
 import 'View/HomeScreen/add_to_Cart.dart';
+import 'Widgets/food_Provider.dart';
 import 'firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
@@ -20,6 +21,8 @@ void main() async {
   } else if (Platform.isIOS) {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.ios);
   } // Bạn có thể thêm các nền tảng khác nếu cần
+
+  /*
   final prefs = await SharedPreferences.getInstance();
   final isDataUploaded = prefs.getBool('isDataUploaded') ?? false;
 
@@ -31,6 +34,8 @@ void main() async {
     prefs.setBool('isDataUploaded', true);
   }
 
+
+   */
   runApp(MyApp());
 }
 
@@ -42,6 +47,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthModel()),
         ChangeNotifierProvider(create: (context) => Cart()),
         ChangeNotifierProvider(create: (context) => AddressScreen()),
+        ChangeNotifierProvider(create: (context) => AllFoodsProvider()),
       ],
       child: const MaterialApp(
         title: 'Food Delivery',

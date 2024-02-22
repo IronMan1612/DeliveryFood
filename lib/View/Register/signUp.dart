@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lap9/View/Register/banner.dart';
-import 'package:lap9/View/Register/signIn.dart';
-import 'package:lap9/components/concept.dart';
-import 'package:lap9/components/defaultButton.dart';
-import 'package:lap9/components/defaultTextLabel.dart';
+import 'package:DeliveryFood/View/Register/banner.dart';
+import 'package:DeliveryFood/View/Register/signIn.dart';
+import 'package:DeliveryFood/components/concept.dart';
+import 'package:DeliveryFood/components/defaultButton.dart';
+import 'package:DeliveryFood/components/defaultTextLabel.dart';
 import '../../components/Navbar/Bottom_Navigation_Bar.dart';
 
 class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -25,165 +27,171 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: ClipOval(
-                    child: Image.network(
-                      'https://static.vecteezy.com/system/resources/previews/011/618/136/non_2x/shopee-element-symbol-shopee-food-shopee-icon-free-vector.jpg',
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
+      body: GestureDetector(
+        onTap: () {
+          // tắt bàn phím
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: ClipOval(
+                      child: Image.network(
+                        'https://static.vecteezy.com/system/resources/previews/011/618/136/non_2x/shopee-element-symbol-shopee-food-shopee-icon-free-vector.jpg',
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 13, right: 13),
-                child: Form(
-                  key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 120,
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Đăng ký',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                            ],
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 13, right: 13),
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 120,
+                            margin: const EdgeInsets.only(bottom: 20),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Đăng ký',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        DefaultTextLabel(
-                          text: 'Nhập Email',
-                          controller: usernameController,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return 'Email không được để trống';
-                            }
-                            if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$").hasMatch(value)) {
-                              return 'Email không hợp lệ';
-                            }
-                            return null;
-                          },
-                        ),
-                        DefaultTextLabel(
-                          text: 'Tên',
-                          controller: nameController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Vui lòng nhập tên';
-                            }
-                            if (RegExp(r'[0-9]|[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                              return 'Tên không được chứa số và kí tự đặc biệt';
-                            }
-                            return null;
-                          },
-                        ),
-                        DefaultTextLabel(
-                          text: 'Số điện thoại',
-                          controller: phoneController,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return 'Số điện thoại không được để trống';
-                            }
-                            if (!RegExp(r"^0\d{9}$").hasMatch(value)) {
-                              return 'SĐT phải có 10 chữ số và bắt đầu bằng số 0';
-                            }
-                            return null;
-                          },
-                        ),
-
-                        DefaultTextLabel(
-                          text: 'Nhập mật khẩu',
-                          controller: passwordController,
-                          obscureText: true,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return 'Mật khẩu không được để trống';
-                            }
-                            if (value.length < 6) {
-                              return 'Mật khẩu phải có ít nhất 6 ký tự';
-                            }
-                            return null;
-                          },
-                        ),
-                        DefaultTextLabel(
-                            text: 'Nhập lại mật khẩu',
-                            controller: reenterPasswordController,
-                            obscureText: true,
+                          DefaultTextLabel(
+                            text: 'Nhập Email',
+                            controller: usernameController,
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Vui lòng nhập lại mật khẩu';
+                              if (value!.trim().isEmpty) {
+                                return 'Email không được để trống';
                               }
-                              if (value != passwordController.text) {
-                                return 'Mật khẩu nhập lại không khớp';
+                              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$").hasMatch(value)) {
+                                return 'Email không hợp lệ';
                               }
                               return null;
-                            }),
-                        DefaultButton(
-                          text: 'Đăng ký',
-                          press: _onSignUpPressed,
-                          color: Kpraimry,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => SignIn()));
-                                    },
-                                    child: const Text('Đăng nhập'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: const Text('Quên mật khẩu?'),
-                                  ),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const NavBar()));
-                                },
-                                child: const Text('Để sau nha , xem món trước'),
-                              ),
-                            ],
+                            },
                           ),
-                        ),
-                      ],
+                          DefaultTextLabel(
+                            text: 'Tên',
+                            controller: nameController,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Vui lòng nhập tên';
+                              }
+                              if (RegExp(r'[0-9]|[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                                return 'Tên không được chứa số và kí tự đặc biệt';
+                              }
+                              return null;
+                            },
+                          ),
+                          DefaultTextLabel(
+                            text: 'Số điện thoại',
+                            controller: phoneController,
+                            validator: (value) {
+                              if (value!.trim().isEmpty) {
+                                return 'Số điện thoại không được để trống';
+                              }
+                              if (!RegExp(r"^0\d{9}$").hasMatch(value)) {
+                                return 'SĐT phải có 10 chữ số và bắt đầu bằng số 0';
+                              }
+                              return null;
+                            },
+                          ),
+
+                          DefaultTextLabel(
+                            text: 'Nhập mật khẩu',
+                            controller: passwordController,
+                            obscureText: true,
+                            validator: (value) {
+                              if (value!.trim().isEmpty) {
+                                return 'Mật khẩu không được để trống';
+                              }
+                              if (value.length < 6) {
+                                return 'Mật khẩu phải có ít nhất 6 ký tự';
+                              }
+                              return null;
+                            },
+                          ),
+                          DefaultTextLabel(
+                              text: 'Nhập lại mật khẩu',
+                              controller: reenterPasswordController,
+                              obscureText: true,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Vui lòng nhập lại mật khẩu';
+                                }
+                                if (value != passwordController.text) {
+                                  return 'Mật khẩu nhập lại không khớp';
+                                }
+                                return null;
+                              }),
+                          DefaultButton(
+                            text: 'Đăng ký',
+                            press: _onSignUpPressed,
+                            color: Kpraimry,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => SignIn()));
+                                      },
+                                      child: const Text('Đăng nhập'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: const Text('Quên mật khẩu?'),
+                                    ),
+                                  ],
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const NavBar()));
+                                  },
+                                  child: const Text('Để sau nha , xem món trước'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const banner(),
-            ],
+                const banner(),
+              ],
+            ),
           ),
         ),
       ),

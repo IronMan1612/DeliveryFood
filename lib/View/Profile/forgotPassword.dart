@@ -21,8 +21,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Center(
-                child: const Text(
+              title: const Center(
+                child: Text(
                   "Thành công!",
                   style: TextStyle(
                     color: Colors.green,
@@ -136,13 +136,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ),
               const SizedBox(height: 20),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _onForgotPasswordPressed,
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white, backgroundColor: Colors.orange, // Màu chữ
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
                   child: const Text('Tiếp tục'),
                 ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../Model/food_item.dart';
 import '../View/HomeScreen/add_to_Cart.dart';
@@ -8,7 +9,7 @@ class FoodListCart extends StatefulWidget {
 
   final Function onCartChanged;
 
-  FoodListCart({super.key, required this.items, required this.cart, required this.onCartChanged});
+  const FoodListCart({super.key, required this.items, required this.cart, required this.onCartChanged});
 
 
   @override
@@ -16,8 +17,41 @@ class FoodListCart extends StatefulWidget {
 }
 
 class _FoodListCartState extends State<FoodListCart> {
-  Map<String, TextEditingController> _noteControllers = {};
+  final Map<String, TextEditingController> _noteControllers = {};
   bool expandedView = false;
+
+  Widget _loadImage(String imagePath) {
+    Widget imageWidget;
+    if (imagePath.startsWith('http')) {
+      imageWidget = CachedNetworkImage(
+        imageUrl: imagePath,
+        placeholder: (context, url) => Container(
+          width: 80,
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+          width: 80, fit: BoxFit.cover
+      );
+    } else {
+      imageWidget = Image.asset(
+        imagePath,
+          width: 80, fit: BoxFit.cover
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        width: 80,
+        color: Colors.white,
+        child: imageWidget,
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +69,7 @@ class _FoodListCartState extends State<FoodListCart> {
               expandedView = true;
             });
           },
-          child: Text("Xem thêm"),
+          child: const Text("Xem thêm"),
         ),
       );
     }
@@ -48,7 +82,7 @@ class _FoodListCartState extends State<FoodListCart> {
               expandedView = false;
             });
           },
-          child: Text("Thu gọn"),
+          child: const Text("Thu gọn"),
         ),
       );
     }
@@ -59,11 +93,7 @@ class _FoodListCartState extends State<FoodListCart> {
   Widget _foodItemWidget(FoodItem food) {
     return Card(
       child: ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: Image.asset(food.imagePath,
-              width: 80, fit: BoxFit.cover),
-        ),
+        leading: _loadImage(food.imagePath),
         title: Text(food.name,
             style: const TextStyle(
                 fontWeight: FontWeight.w600)),
@@ -80,7 +110,7 @@ class _FoodListCartState extends State<FoodListCart> {
               style:
               const TextStyle(color: Colors.black87),
             ),
-            Container(
+            SizedBox(
               height: 24,
               child: TextField(
                 controller: _noteControllers[food.id],

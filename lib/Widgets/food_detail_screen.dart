@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Model/food_item.dart';
@@ -6,7 +6,42 @@ import '../View/HomeScreen/add_to_Cart.dart';
 class FoodDetailScreen extends StatelessWidget {
   final FoodItem food;
 
-  FoodDetailScreen({required this.food});
+   const FoodDetailScreen({super.key, required this.food});
+
+
+
+  Widget _loadImage(String imagePath, {BoxFit? fit, double? height}) {
+    Widget imageWidget;
+    if (imagePath.startsWith('http')) {
+      imageWidget = CachedNetworkImage(
+        imageUrl: imagePath,
+        placeholder: (context, url) => Container(
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+        fit: fit ?? BoxFit.contain, // Sử dụng giá trị mặc định nếu không được cung cấp
+        height: height,
+      );
+    } else {
+      imageWidget = Image.asset(
+        imagePath,
+        fit: fit ?? BoxFit.contain, // Sử dụng giá trị mặc định nếu không được cung cấp
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        width: double.infinity, //height do ảnh tự lấy
+        color: Colors.white,
+        child: imageWidget,
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +59,7 @@ class FoodDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: 300,
                 width: double.infinity,
                 child: GestureDetector(
@@ -36,11 +71,12 @@ class FoodDetailScreen extends StatelessWidget {
                         child: Stack(
                           children: [
                             Center(
-                              child: Image.asset(
+                              child: _loadImage(
                                 food.imagePath,
-                                fit: BoxFit.contain,
-                                height: MediaQuery.of(ctx).size.height * 0.8,
+                                fit: BoxFit.contain, // hoặc BoxFit.cover tùy vào trường hợp
+                                height: MediaQuery.of(ctx).size.height * 0.8, // hoặc giá trị khác tùy vào trường hợp
                               ),
+
                             ),
                             Positioned(
                               right: 10,
@@ -57,10 +93,13 @@ class FoodDetailScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Image.asset(
+                  child: _loadImage(
                     food.imagePath,
                     fit: BoxFit.cover,
+
                   ),
+
+
                 ),
               ),
               const SizedBox(height: 10),

@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../View/Order/orderDetail.dart';
 class OrderListItem extends StatelessWidget {
@@ -60,7 +58,7 @@ class OrderListItem extends StatelessWidget {
 
 
 
-    var totalPrice = order.get('totalPrice');
+    var totalWithDiscount = order.get('totalWithDiscount');
     var status = order.get('status');
     //Màu ứng vs các trạng thái
     Color getStatusColor(String status) {
@@ -130,7 +128,7 @@ class OrderListItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        "${totalPrice.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}đ - $totalItems món - Tiền mặt",
+                        "${totalWithDiscount.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}đ - $totalItems món - Tiền mặt",
                         style: const TextStyle(
                           color: Colors.orange,
                         ),

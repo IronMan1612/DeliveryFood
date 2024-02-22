@@ -8,8 +8,8 @@ class appbarr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       height: 45,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -22,9 +22,9 @@ class appbarr extends StatelessWidget {
           ),
           Text(
             text!,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
           ),
-          SizedBox(
+          const SizedBox(
             width: 30,
           )
         ],

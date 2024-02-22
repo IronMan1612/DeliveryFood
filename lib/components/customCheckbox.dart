@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lap9/components/concept.dart';
+import 'package:DeliveryFood/components/concept.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 
 class checkbox extends StatefulWidget {
-  checkbox({Key? key}) : super(key: key);
+  const checkbox({Key? key}) : super(key: key);
 
   @override
   State<checkbox> createState() => _checkboxState();
@@ -14,20 +14,18 @@ class _checkboxState extends State<checkbox> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: MSHCheckbox(
-        size: 60,
-        value: isChecked,
-        colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(
-          checkedColor: Kpraimry,
-        ),
-        style: MSHCheckboxStyle.fillScaleCheck,
-        onChanged: (selected) {
-          setState(() {
-            isChecked = selected;
-          });
-        },
+    return MSHCheckbox(
+      size: 60,
+      value: isChecked,
+      colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(
+        checkedColor: Kpraimry,
       ),
+      style: MSHCheckboxStyle.fillScaleCheck,
+      onChanged: (selected) {
+        setState(() {
+          isChecked = selected;
+        });
+      },
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lap9/View/Register/signIn.dart';
+import 'package:DeliveryFood/View/Register/signIn.dart';
 
 class DeleteAccount extends StatefulWidget {
+  const DeleteAccount({super.key});
+
   @override
   _DeleteAccountState createState() => _DeleteAccountState();
 }
@@ -39,7 +41,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Chúng tôi rất tiếc khi bạn muốn rời đi. Nếu tạm thời bạn không muốn dùng tài khoản này, bạn có thể Đăng xuất và Đăng nhập lại bất cú khi nào. Sau khi xoá tài khoản, bạn không thể:",
+                    "Chúng tôi rất tiếc khi bạn muốn rời đi. \nNếu tạm thời bạn không muốn dùng tài khoản này, bạn có thể Đăng xuất và Đăng nhập lại bất cú khi nào. \nSau khi xoá tài khoản, bạn không thể:",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   SizedBox(height: 25),
@@ -149,23 +151,24 @@ class _DeleteAccountState extends State<DeleteAccount> {
             ),
           ),
           content: RichText(
+            textAlign: TextAlign.center,
             text: TextSpan(
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 20,
+                fontSize: 16,
               ),
               children: <TextSpan>[
-                const TextSpan(text: "Chúng tôi đã nhận được yêu cầu xoá tài khoản "),
+                const TextSpan(text: "Chúng tôi đã nhận được yêu cầu xoá tài khoản \n" ),
                 TextSpan(
                   text: email,
                   style: const TextStyle(color: Colors.orange),
                 ),
-                const TextSpan(text: " . Yêu cầu sẽ được xử lý từ 1 - 3 ngày làm việc"),
+                const TextSpan(text: ".\n Yêu cầu sẽ được xử lý từ 1 - 3 ngày làm việc"),
               ],
             ),
           ),
           actions: <Widget>[
-            Container(
+            SizedBox(
               width: double.infinity,
               child: TextButton(
                 child: const Text(

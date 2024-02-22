@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../Services/Firebase_Service.dart';
@@ -93,7 +92,7 @@ class _OrderListScreenState extends State<OrderListScreen> with SingleTickerProv
         controller: _tabController,
         children: [
           StreamBuilder(
-            stream: getUserOrders(currentUser!.uid, ['Chờ xác nhận', 'Đang giao', 'Đang xử lý']),
+            stream: getUserOrders(currentUser.uid, ['Chờ xác nhận', 'Đang giao hàng', 'Đang xử lý']),
             builder: (context, snapshot) {
               return _buildOrderList(snapshot);
             },

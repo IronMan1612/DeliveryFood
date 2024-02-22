@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lap9/View/Voucher/voucherDetail.dart';
+import 'package:DeliveryFood/View/Voucher/voucherDetail.dart';
 import '../../Model/Voucher.dart';
-import 'package:lap9/View/Voucher/voucher_load_logic.dart';
+import 'package:DeliveryFood/View/Voucher/voucher_load_logic.dart';
 class ChooseVoucher extends StatefulWidget {
   final double cartTotal;
   final String userId;
 
-  ChooseVoucher({required this.cartTotal, required this.userId});
+  const ChooseVoucher({super.key, required this.cartTotal, required this.userId});
 
   @override
   _ChooseVoucherState createState() => _ChooseVoucherState();
@@ -150,7 +150,7 @@ class _ChooseVoucherState extends State<ChooseVoucher> {
         title: Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),  // Set text color to black
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),  // Set text color to black
         ),
 
         content: Text(message, textAlign: TextAlign.center),
@@ -180,111 +180,117 @@ class _ChooseVoucherState extends State<ChooseVoucher> {
         title: const Text('Chọn Voucher'),
         backgroundColor: Colors.orange,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.search),
-                      title: TextField(
-                        controller: searchController,
-                        onChanged: (value) {
-                          setState(() {
-                            searchQuery = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Nhập voucher',
-                          border: InputBorder.none,
-                          suffixIcon: searchQuery.isNotEmpty
-                              ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              setState(() {
-                                searchQuery = '';
-                                searchController.text = '';  // xoá tìm kiếm
-                              });
-                            },
-                          )
-                              : null,
+      body: GestureDetector(
+        onTap: () {
+          // tắt bàn phím
+          FocusScope.of(context).unfocus();
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.search),
+                        title: TextField(
+                          controller: searchController,
+                          onChanged: (value) {
+                            setState(() {
+                              searchQuery = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Nhập voucher',
+                            border: InputBorder.none,
+                            suffixIcon: searchQuery.isNotEmpty
+                                ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                setState(() {
+                                  searchQuery = '';
+                                  searchController.text = '';  // xoá tìm kiếm
+                                });
+                              },
+                            )
+                                : null,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: searchQuery.trim().isEmpty
-                      ? null
-                      : () => searchVoucher(),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: searchQuery.trim().isEmpty ? Colors.grey : Colors.orange,
+                  ElevatedButton(
+                    onPressed: searchQuery.trim().isEmpty
+                        ? null
+                        : () => searchVoucher(),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: searchQuery.trim().isEmpty ? Colors.grey : Colors.orange,
+                    ),
+                    child: const Text('Thêm'),
                   ),
-                  child: const Text('Thêm'),
-                ),
 
-              ],
-            ),
-          ),
-          Expanded(
-            child: isLoadingData
-                ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.card_giftcard, size: 50, color: Colors.orange),
-                  SizedBox(height: 20),
-                  CircularProgressIndicator(),
                 ],
               ),
-            )
-                : ListView(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("Các voucher có thể áp dụng"),
-                ),
-                ...allVouchers.where(isValidVoucher).map((voucher) => buildVoucherCard(voucher, context, true)).toList(),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("Chưa đủ điều kiện áp dụng"),
-                ),
-                ...allVouchers.where(isNotValidVoucher).map((voucher) => buildVoucherCard(voucher, context, false)).toList(),
-
-                /*
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text("Đã dùng & hết hạn"),
-                ),
-                ...allVouchers.where(isExpiredOrUsedVoucher).map((voucher) => buildVoucherCard(voucher, context, false)).toList(),
-                */
-
-              ],
-
             ),
-          ),
+            Expanded(
+              child: isLoadingData
+                  ? const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.card_giftcard, size: 50, color: Colors.orange),
+                    SizedBox(height: 20),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              )
+                  : ListView(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("Các voucher có thể áp dụng"),
+                  ),
+                  ...allVouchers.where(isValidVoucher).map((voucher) => buildVoucherCard(voucher, context, true)).toList(),
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("Chưa đủ điều kiện áp dụng"),
+                  ),
+                  ...allVouchers.where(isNotValidVoucher).map((voucher) => buildVoucherCard(voucher, context, false)).toList(),
 
+                  /*
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text("Đã dùng & hết hạn"),
+                  ),
+                  ...allVouchers.where(isExpiredOrUsedVoucher).map((voucher) => buildVoucherCard(voucher, context, false)).toList(),
+                  */
 
+                ],
 
-          Container(
-            width: double.infinity,
-            height: 45,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, _selectedVoucher);
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.orange,
               ),
-              child: const Text('Dùng Ngay'),
             ),
-          ),
-        ],
+
+
+
+            Container(
+              width: double.infinity,
+              height: 45,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, _selectedVoucher);
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.orange,
+                ),
+                child: const Text('Dùng Ngay'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -403,7 +409,7 @@ class _ChooseVoucherState extends State<ChooseVoucher> {
                       color: _selectedVoucher?.id == voucher.id ? Colors.orange : Colors.white,
                     ),
                     child: _selectedVoucher?.id == voucher.id
-                        ? Center(child: const Icon(Icons.check, size: 14, color: Colors.white))
+                        ? const Center(child: Icon(Icons.check, size: 14, color: Colors.white))
                         : null,
                   ),
                 ),

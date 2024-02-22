@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lap9/View/Voucher/voucherDetail.dart';
-import 'package:lap9/View/Voucher/voucher_load_logic.dart';
+import 'package:DeliveryFood/View/Voucher/voucherDetail.dart';
+import 'package:DeliveryFood/View/Voucher/voucher_load_logic.dart';
 
 import '../../Model/Voucher.dart';
 import '../Register/signIn.dart';
@@ -99,9 +98,14 @@ class _VoucherListState extends State<VoucherList> {
           children: [
             _buildVoucherListView(
                     (voucher) => !usedVouchers.contains(voucher.id) && !voucher.isHidden && voucher.maxUses > voucher.currentUses && DateTime.now().isBefore(voucher.expiryDate)),
-            _buildVoucherListView((voucher) => usedVouchers.contains(voucher.id)),
-            _buildVoucherListView(
-                    (voucher) => !usedVouchers.contains(voucher.id) && voucher.maxUses <= voucher.currentUses  || DateTime.now().isAfter(voucher.expiryDate)),
+            Opacity(
+                opacity: 0.5,
+                child: _buildVoucherListView((voucher) => usedVouchers.contains(voucher.id))),
+            Opacity(
+              opacity: 0.5,
+              child: _buildVoucherListView(
+                      (voucher) => !usedVouchers.contains(voucher.id) && voucher.maxUses <= voucher.currentUses  || DateTime.now().isAfter(voucher.expiryDate)),
+            ),
           ],
         ),
       ),

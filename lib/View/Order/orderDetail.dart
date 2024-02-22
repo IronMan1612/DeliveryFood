@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Model/food_item.dart';
@@ -9,7 +9,7 @@ import '../../components/Navbar/Bottom_Navigation_Bar.dart';
 class OrderDetailScreen extends StatelessWidget {
   final QueryDocumentSnapshot order;
 
-  OrderDetailScreen({required this.order});
+  const OrderDetailScreen({super.key, required this.order});
 
   Future<List<FoodItem>> _getItems() async {
     var itemsMap = order.get('orderItems') as Map<String, dynamic>;
@@ -25,6 +25,45 @@ class OrderDetailScreen extends StatelessWidget {
     }
     return items;
   }
+
+  
+  Widget _loadImage(String imagePath) {
+    Widget imageWidget;
+    if (imagePath.startsWith('http')) {
+      imageWidget = CachedNetworkImage(
+          imageUrl: imagePath,
+          placeholder: (context, url) => Container(
+            width: 60,
+            color: Colors.white,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        width: 60,
+        height: 90,
+        fit: BoxFit.cover,
+      );
+    } else {
+      imageWidget = Image.asset(
+          imagePath,
+        width: 60,
+        height: 90,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        width: 60,
+        color: Colors.white,
+        child: imageWidget,
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,23 +112,6 @@ class OrderDetailScreen extends StatelessWidget {
           return Colors.green;
         default:
           return Colors.blue; // màu mặc định
-      }
-    }
-    Widget _loadImage(String imagePath) {
-      if (imagePath.startsWith('http')) {
-        return Image.network(
-          imagePath,
-          width: 60,
-          height: 90,
-          fit: BoxFit.cover,
-        );
-      } else {
-        return Image.asset(
-          imagePath,
-          width: 60,
-          height: 90,
-          fit: BoxFit.cover,
-        );
       }
     }
 
@@ -355,7 +377,6 @@ class OrderDetailScreen extends StatelessWidget {
                         style: TextStyle(color: getStatusColor(status), fontSize: 20)),
                   ],
                 ),
-
                 if (status == 'Chờ xác nhận') ...[
                   const SizedBox(height: 10.0),
                   Center(
@@ -376,7 +397,6 @@ class OrderDetailScreen extends StatelessWidget {
                             actions: [
                               Column(
                                 children: [
-                                  //const Divider(color: Colors.black54),
                                   Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -393,46 +413,44 @@ class OrderDetailScreen extends StatelessWidget {
                                       Expanded(
                                         child: TextButton(
                                           onPressed: () async {
-                                            await FirebaseService()
-                                                .updateOrderStatus(
-                                                order.id, 'Đã huỷ');
+                                            // Lưu id đơn hàng và id voucher
+                                            String orderId = order.id;
+                                            String? voucherId = order.get('voucherId');
+
+                                            Navigator.of(context).pop(); // Đóng hộp thoại
+
                                             // Thông báo huỷ đơn thành công
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
+                                            ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(
                                                 content: const Text(
                                                   "Huỷ đơn thành công!",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                      FontWeight.w600),
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                                                 ),
-                                                backgroundColor:
-                                                Colors.green[400],
-                                                behavior: SnackBarBehavior
-                                                    .floating,
-                                                shape:
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      24),
+                                                backgroundColor: Colors.green[400],
+                                                behavior: SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(24),
                                                 ),
-                                                duration: const Duration(
-                                                    seconds: 1),
+                                                duration: const Duration(seconds: 1),
                                               ),
                                             );
+
                                             // chuyển về list order
                                             Navigator.pushAndRemoveUntil(
                                               context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                  const NavBar(
-                                                      initialPage: 2)),
-                                              // 2 là index của OrderListScreen
-                                                  (Route<dynamic> route) =>
-                                              false, // Xóa tất cả các màn hình trước đó
+                                              MaterialPageRoute(builder: (context) => const NavBar(initialPage: 2)),
+                                                  (Route<dynamic> route) => false, // Xóa tất cả các màn hình trước đó
                                             );
+
+                                            // Thực hiện huỷ đơn và cập nhật voucher (nếu voucherId không phải là null)
+                                            await FirebaseService().updateOrderStatus(orderId, 'Đã huỷ');
+
+                                            if (voucherId != null) {
+                                              await FirebaseService().decreaseVoucherUses(voucherId);
+                                              await FirebaseService().deleteUserUsedVoucher(order.get('userId'), voucherId);
+                                            }
                                           },
+
                                           child: const Text('Có',
                                               style: TextStyle(
                                                   color: Colors.red)),
@@ -454,6 +472,7 @@ class OrderDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+
 
                 if (status == 'Hoàn thành') ...[
                   const SizedBox(height: 10.0),

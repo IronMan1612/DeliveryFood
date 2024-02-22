@@ -50,7 +50,7 @@ class AboutUs extends StatelessWidget {
 
               const SizedBox(height: 25), // Khoảng trống giữa ảnh và văn bản
               const Spacer(), // Đẩy nút xuống dưới cùng của màn hình
-              Container(
+              SizedBox(
                 width: double.infinity, // Chiều rộng bằng với màn hình
                 child: ElevatedButton(
                   onPressed: () {

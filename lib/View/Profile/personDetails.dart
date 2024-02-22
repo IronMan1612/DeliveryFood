@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PersonDetails extends StatefulWidget {
@@ -14,7 +13,7 @@ class _PersonDetailsState extends State<PersonDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 215,
       child: Center(
         child: Column(

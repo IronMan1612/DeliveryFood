@@ -91,7 +91,7 @@ class FoodItem {
 
   static List<String> generateKeywords(String name) {
     List<String> result = [];
-    var splitWords = name.split(' ');
+    var splitWords = name.split(' ');               // tách từ thành chuỗi từ đơn
     for (int i = 0; i < splitWords.length; i++) {
       for (int j = i; j < splitWords.length; j++) {
         result.add(concatenateWords(splitWords, i, j).toLowerCase());
@@ -102,7 +102,7 @@ class FoodItem {
 
   static String concatenateWords(List<String> words, int start, int end) {
     String result = "";
-    for (int i = start; i <= end; i++) {
+    for (int i = start; i <= end; i++) {                          // ghép từ đơn lại
       result += words[i];
     }
     return result;

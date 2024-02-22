@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lap9/View/Profile/user_profile_details.dart';
+import 'package:DeliveryFood/View/Profile/user_profile_details.dart';
 import 'DeleteAccount.dart';
 import 'changePassword.dart';
 import 'customAction.dart';

@@ -1,0 +1,6 @@
+[33m254e9a4[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{0}: pull --rebase origin main (start): checkout 254e9a42274ab8a1542d3fcb84615dc82f0170bd
+[33m4a53cec[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: rebase (finish): returning to refs/heads/main
+[33m4a53cec[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m HEAD@{2}: commit: second submit
+[33md4b02d4[m HEAD@{3}: pull origin main --rebase (start): checkout d4b02d4ad77d0af2aa4e4477868e70b1ade576fe
+[33m254e9a4[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{4}: checkout: moving from master to main
+[33m254e9a4[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{5}: commit (initial): first commit

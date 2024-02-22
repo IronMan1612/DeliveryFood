@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class location extends StatelessWidget {
   const location({super.key});
@@ -10,12 +8,12 @@ class location extends StatelessWidget {
     return Container(
       //margin: EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left: 30, right: 130),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.asset('assets/pin 1.png'),
-          Text('Đà Nẵng'),
+          const Text('Đại Học Sư Phạm , Đà Nẵng'),
         ],
       ),
     );

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../Model/Address.dart';
 import '../../Services/Firebase_Service.dart';
 
 class AddAddressPage extends StatefulWidget {
   final Address? address;
 
-  AddAddressPage({this.address});
+  const AddAddressPage({super.key, this.address});
 
   @override
   _AddAddressPageState createState() => _AddAddressPageState();
@@ -45,7 +44,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
       labelText: label,
       labelStyle: const TextStyle(color: Colors.orange),
       counterText: '${controller.text.length}/$maxLength',
-      counterStyle: TextStyle(color: Colors.orange),
+      counterStyle: const TextStyle(color: Colors.orange),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: Colors.orange, width: 2.0),
       ),
@@ -59,64 +58,70 @@ class _AddAddressPageState extends State<AddAddressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Thêm địa chỉ mới'), backgroundColor: Colors.orange),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                maxLength: 20,
-                decoration: _inputDecoration('Tên người nhận', _nameController, 20),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập tên';
-                  }
-                  if (RegExp(r'[0-9]|[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                    return 'Tên không được chứa số và kí tự đặc biệt';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _phoneController,
-                maxLength: 10,
-                decoration: _inputDecoration('Số điện thoại', _phoneController, 10),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập số điện thoại';
-                  }
-                  if (!RegExp(r'^0\d{9}$').hasMatch(value)) {
-                    return 'Số điện thoại không hợp lệ';
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.phone,
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _addressController,
-                maxLength: 70,
-                decoration: _inputDecoration('Địa chỉ đầy đủ', _addressController, 70),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Vui lòng nhập địa chỉ';
-                  }
-                  return null;
-                },
-                maxLines: 2,
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                controller: _noteController,
-                maxLength: 100,
-                decoration: _inputDecoration('Ghi chú (tùy chọn)', _noteController, 100),
-                maxLines: 3,
-              ),
-            ],
+      body: GestureDetector(
+        onTap: () {
+          // tắt bàn phím
+          FocusScope.of(context).unfocus();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  maxLength: 20,
+                  decoration: _inputDecoration('Tên người nhận', _nameController, 20),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Vui lòng nhập tên';
+                    }
+                    if (RegExp(r'[0-9]|[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                      return 'Tên không được chứa số và kí tự đặc biệt';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _phoneController,
+                  maxLength: 10,
+                  decoration: _inputDecoration('Số điện thoại', _phoneController, 10),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Vui lòng nhập số điện thoại';
+                    }
+                    if (!RegExp(r'^0\d{9}$').hasMatch(value)) {
+                      return 'Số điện thoại không hợp lệ';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _addressController,
+                  maxLength: 70,
+                  decoration: _inputDecoration('Địa chỉ đầy đủ', _addressController, 70),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Vui lòng nhập địa chỉ';
+                    }
+                    return null;
+                  },
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _noteController,
+                  maxLength: 100,
+                  decoration: _inputDecoration('Ghi chú (tùy chọn)', _noteController, 100),
+                  maxLines: 3,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,45 @@ import 'food_detail_screen.dart';
 class FoodListItem extends StatelessWidget {
   final FoodItem food;
 
-  FoodListItem({required this.food});
+  const FoodListItem({super.key, required this.food});
+
+  Widget _loadImage(String imagePath) {
+    Widget imageWidget;
+    if (imagePath.startsWith('http')) {
+      imageWidget = CachedNetworkImage(
+        imageUrl: imagePath,
+        placeholder: (context, url) => Container(
+          width: 60,
+          height: 60,
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+        fit: BoxFit.cover,
+        width: 60,
+        height: 60,
+      );
+    } else {
+      imageWidget = Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
+        width: 60,
+        height: 60,
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Container(
+        width: 60,
+        height: 60,
+        color: Colors.white,
+        child: imageWidget,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +62,15 @@ class FoodListItem extends StatelessWidget {
         child: ListTile(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          leading: Image.asset(food.imagePath, width: 60, fit: BoxFit.cover),
+          leading: _loadImage(food.imagePath),
           title: Text(food.name),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 5),
               Text(
-                food.description.length > 20
-                    ? food.description.substring(0, 20) + '...'
+                food.description.length > 16
+                    ? '${food.description.substring(0, 16)}...'
                     : food.description,
               ),
               const SizedBox(height: 10),
@@ -49,8 +88,7 @@ class FoodListItem extends StatelessWidget {
 
             children: [
               SizedBox(height: maxHeight,),
-              if (food != null &&
-                  cart.items.containsKey(food) &&
+              if (cart.items.containsKey(food) &&
                   cart.items[food]! > 0)
                 Container(
                   decoration: BoxDecoration(
@@ -71,15 +109,14 @@ class FoodListItem extends StatelessWidget {
                   ),
                 ),
               const SizedBox(width: 15),
-              if (food != null &&
-                  cart.items.containsKey(food) &&
+              if (cart.items.containsKey(food) &&
                   cart.items[food]! > 0)
                 Text(
                   '${cart.items[food]}',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               const SizedBox(width: 15),
-              if (food != null && food.isAvailable)
+              if (food.isAvailable)
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.orange,
@@ -99,7 +136,7 @@ class FoodListItem extends StatelessWidget {
                   ),
                 ),
 
-              if (food != null && !food.isAvailable)
+              if (!food.isAvailable)
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

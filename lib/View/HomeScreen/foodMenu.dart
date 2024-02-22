@@ -16,7 +16,7 @@ class menuitem extends StatelessWidget {
     return InkWell(
       onTap: () {},
       child: Container(
-        margin: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
+        margin: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
         // padding: EdgeInsets.only(
         //   right: 7,
         // ),
@@ -34,10 +34,10 @@ class menuitem extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 20, top: 20),
+                  margin: const EdgeInsets.only(left: 20, top: 20),
                   child: Text(
                     text!,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),

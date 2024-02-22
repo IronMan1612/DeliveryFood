@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Support extends StatelessWidget {
@@ -34,7 +33,7 @@ class Support extends StatelessWidget {
               const SizedBox(height: 5),
               const Text('Thứ Bảy - Chủ Nhật: Đóng cửa'),
               const Spacer(), // Đẩy nút xuống dưới cùng của màn hình
-              Container(
+              SizedBox(
                 width: double.infinity, // Chiều rộng bằng với màn hình
                 child: ElevatedButton(
                   onPressed: () {

@@ -31,7 +31,7 @@ class action extends StatelessWidget {
                 color: iconColor,
                 size: iconSize,
               ),
-            SizedBox(width: 10.0), // Khoảng cách giữa icon và text
+            const SizedBox(width: 10.0), // Khoảng cách giữa icon và text
             Expanded(
               child: Text(
                 text!,

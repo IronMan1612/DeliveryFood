@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:lap9/View/HomeScreen/Home_Screen.dart';
+import 'package:DeliveryFood/View/HomeScreen/Home_Screen.dart';
 import '../../View/Cart/cart_screen.dart';
 import '../../View/Order/order_list_screen.dart';
 import '../../View/Profile/Profile_Screen.dart';
@@ -53,21 +52,20 @@ class _NavBarState extends State<NavBar> {
                 ),
                 child: BottomNavigationBar(
                   backgroundColor: Colors.orange,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
                   type: BottomNavigationBarType.fixed,
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                         icon: Icon(Icons.home_rounded), label: "Home"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.shopping_cart), label: "Cart"),
+                        icon: Icon(Icons.shopping_cart), label: "Giỏ hàng"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.rate_review_outlined),
-                        label: "Timeline"),
+                        icon: Icon(Icons.rate_review_outlined), label: "Đơn hàng"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.local_offer), label: "Home"),
+                        icon: Icon(Icons.local_offer), label: "Voucher"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.person), label: "Person"),
+                        icon: Icon(Icons.person), label: "Tôi"),
                   ],
                   currentIndex: selectedIndex,
                   elevation: 0,

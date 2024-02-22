@@ -27,6 +27,8 @@ class AddressScreen extends ChangeNotifier {
 
 
 class AddressPage extends StatefulWidget {
+  const AddressPage({super.key});
+
   @override
   _AddressPageState createState() => _AddressPageState();
 }

@@ -1,61 +1,65 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:lap9/Model/food_category.dart';
-import 'package:lap9/Services/firebase_service.dart';
+import 'package:DeliveryFood/Model/food_category.dart';
 import 'food_list_screen.dart';
 
 class CategoryWidget extends StatelessWidget {
   final FoodCategory foodCategory;
-  final FirebaseService _firebaseService = FirebaseService();
 
-  CategoryWidget({required this.foodCategory});
+  const CategoryWidget({super.key, required this.foodCategory});
+
+  Widget _getImage(String imagePath) {
+    if (imagePath.startsWith('http') || imagePath.startsWith('https')) {
+      return CachedNetworkImage(
+        imageUrl: imagePath,
+        height: 50,
+        width: 50,
+          fit: BoxFit.contain,
+        placeholder: (context, url) => Container(
+          width: 50,
+          height: 50,
+          color: Colors.white, // Màu nền, có thể thay đổi theo ý muốn
+          child: const Center(child: CircularProgressIndicator()),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      );
+    } else {
+      return Image.asset(
+        imagePath,
+        height: 50,
+        width: 50,
+          fit: BoxFit.contain
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Hàm này trả về widget hình ảnh dựa trên URL
+
     return InkWell(
       onTap: () async {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => FoodListScreen(categoryId: foodCategory.id),
-
           ),
         );
       },
       child: Container(
+        width: 100,
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: const Color(0xffECF0F1),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Image.asset(foodCategory.imagePath),
-              ),
+            SizedBox(
+              child: _getImage(foodCategory.imagePath),  // Sử dụng hàm _getImage
             ),
-            const SizedBox(height: 10),
             Text(
               foodCategory.name,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
               ),
             ),
